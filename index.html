@@ -1,21 +1,13 @@
 <style>
 
-    /*body {*/
-    /*    background-color: rgb(33, 36, 41);*/
-    /*    display: block;*/
-    /*    margin: 8px;*/
-    /*}*/
-
-
-    .dGYAPL {
-        position: relative;
-        max-width: 480px;
-        width: 100%;
-        background: rgb(255, 255, 255);
-        box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
-        border-radius: 24px;
-        margin-top: 1rem;
+    body {
+        background-color: rgb(33, 36, 41);
+        display: block;
+        margin: 8px;
     }
+
+
+
 
 
     .ivYrlN {
@@ -733,7 +725,7 @@
 <!--<div class="sc-1dv6j2d-1 hIoStg">-->
 <!--    <div class="sc-ebxalf-0 dGYAPL">-->
 <div class="sc-jhay2b-0 ivYrlN">
-    <div id="LogoName" class="sc-18nh1jk-0 CBHzA css-10yinq6">Inu Gami Presale</div>
+    <div id="LogoName" class="sc-18nh1jk-0 CBHzA css-10yinq6">TOKEN WIDGET</div>
 </div>
 <div id="swap-page" class="sc-11ce2lf-0 ilNpYv">
     <div class="sc-1kykgp9-2 bBlzxc">
@@ -767,7 +759,7 @@
                                                                  autocomplete="off"
                                                                 oninput="getPrice()"
                                                                 class="sc-1x3stf0-0 kjVGCt token-amount-input"
-                                                                disabled placeholder="0 InuGami" value=""></div>
+                                                                disabled placeholder="0 NAME_TOKEN" value=""></div>
                     <div class="sc-33m4yg-5 sc-33m4yg-6 kvRXYu iipmPE">
                         <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-1 fzUdiI bNRzcC cTqxjL"><span></span>
                             <div class="sc-18nh1jk-0 bTfoun css-djrxae"></div>
@@ -1301,7 +1293,8 @@
     const button = document.getElementById('buttonConnect-Buy')
     const inputTokens = document.getElementById('inputTokens')
     const inputEth = document.getElementById('inputEth')
-
+    const MIN_PRICE = 0.1
+    const MAX_PRICE = 1
     let globalPrice = "0"
     // constants end
     window.addEventListener('load',async () => console.log(await contract.methods.priceInWei().call()))
@@ -1309,7 +1302,7 @@
     async function getPrice() {
         const PRICE_FOR = await web3.utils.fromWei(await contract.methods.priceInWei().call())
 
-        if (inputTokens.value * PRICE_FOR >= 0.1 && inputTokens.value * PRICE_FOR <= 1) {
+        if (inputTokens.value * PRICE_FOR >= MIN_PRICE && inputTokens.value * PRICE_FOR <= MAX_PRICE) {
             console.log("go in")
             button.style.backgroundColor = 'rgb(39, 174, 96)';
             button.disabled = false
@@ -1319,16 +1312,16 @@
             console.log(inputEth.value)
             globalPrice = inputEth.value
         }
-            else if (inputTokens.value * PRICE_FOR < 0.1) {
+            else if (inputTokens.value * PRICE_FOR < MIN_PRICE) {
                 button.disabled = true
                 inputEth.value = ""
                 button.style.backgroundColor = "#f8d7da"
-                button.innerHTML = "Please, buy tokens for more than 0.1 ETH"
+                button.innerHTML = `Please, buy tokens for more than ${MIN_PRICE} ETH`
             } else  {
                 button.disabled = true
                 inputEth.value = ""
                 button.style.backgroundColor = "#f8d7da"
-                button.innerHTML = "Please, buy tokens for less than 1 ETH"
+                button.innerHTML = `Please, buy tokens for less than ${MAX_PRICE} ETH`
 
             }
 
@@ -1338,7 +1331,7 @@
 
 
     async function getAmountTokens(value = "0") {
-        if (value >= 0.1 && value <= 1) {
+        if (value >= MIN_PRICE && value <= MAX_PRICE) {
             button.style.backgroundColor = 'rgb(39, 174, 96)';
             button.disabled = false
             button.innerHTML = 'Buy tokens'
@@ -1351,12 +1344,12 @@
                 inputTokens.value = ""
                 button.style.backgroundColor = "#f8d7da"
                 button.disabled = true
-                button.innerHTML = "Please, buy tokens for more than 0.1 ETH"
+                button.innerHTML = `Please, buy tokens for more than ${MIN_PRICE} ETH`
             } else {
                 inputTokens.value = ""
                 button.style.backgroundColor = "#f8d7da"
                 button.disabled = true
-                button.innerHTML = "Please, buy tokens for less than 1 ETH"
+                button.innerHTML = `Please, buy tokens for less than ${MAX_PRICE} ETH`
 
             }
 
@@ -1388,11 +1381,9 @@
                             method: 'wallet_addEthereumChain',
                             params: [{
                                 chainId: '0x1',
-                                rpcUrl: netURL
                             }],
                         });
                     } catch (addError) {
-                        // handle "add" error
                     }
                 }
             }
@@ -1419,8 +1410,6 @@
 
     async function sendEth(value = "0") {
         const account = await getAccount()
-        // console.log(globalPrice)
-        // const globalPriceToHex = await web3.utils.toWei(globalPrice, "ether").toString(16)
         const globalPriceToHex = (globalPrice * 1e18).toString(16)
         window.ethereum
             .request({
@@ -1439,6 +1428,3 @@
 
 
 </script>
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"-->
-<!--        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"-->
-<!--        crossorigin="anonymous"></script>-->
