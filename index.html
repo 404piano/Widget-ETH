@@ -194,25 +194,7 @@
         z-index: 2;
     }
 
-    svg[Attributes Style
 
-    ]
-    {
-        width: 16
-    ;
-        height: 16
-    ;
-        fill: none
-    ;
-        stroke: rgb(110, 114, 125)
-    ;
-        stroke-width: 2
-    ;
-        stroke-linecap: round
-    ;
-        stroke-linejoin: round
-    ;
-    }
 
 
     .dgLlAI {
@@ -733,12 +715,12 @@
             <div id="swap-currency-input" label="[object Object]" class="sc-33m4yg-0 dgLlAI">
                 <div class="sc-33m4yg-2 dSgqMY">
                     <div class="sc-33m4yg-4 hzRLOF">price<input type="number" oninput="triggerGetAmountTokens()" id="inputEth"
-                                                                 disabled autocomplete="off"
-                                                                 class="sc-1x3stf0-0 kjVGCt token-amount-input"
-                                                                 inputmode="decimal"
-                                                                 type="text" pattern="^[0-9]*[.,]?[0-9]*$"
-                                                                 placeholder="0.0 ETH"
-                                                                 spellcheck="false" value=""></div>
+                                                                disabled autocomplete="off"
+                                                                class="sc-1x3stf0-0 kjVGCt token-amount-input"
+                                                                inputmode="decimal"
+                                                                type="text" pattern="^[0-9]*[.,]?[0-9]*$"
+                                                                placeholder="0.0 ETH"
+                                                                spellcheck="false" value=""></div>
                     <div class="sc-33m4yg-5 sc-33m4yg-6 kvRXYu iipmPE">
                         <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-1 fzUdiI bNRzcC cTqxjL"><span></span>
                             <div class="sc-18nh1jk-0 bTfoun css-djrxae"></div>
@@ -757,9 +739,9 @@
                 <div class="sc-33m4yg-2 dSgqMY">
                     <div class="sc-33m4yg-4 hzRLOF">amount<input type="number" id="inputTokens"
                                                                  autocomplete="off"
-                                                                oninput="getPrice()"
-                                                                class="sc-1x3stf0-0 kjVGCt token-amount-input"
-                                                                disabled placeholder="0 NAME_TOKEN" value=""></div>
+                                                                 oninput="getPrice()"
+                                                                 class="sc-1x3stf0-0 kjVGCt token-amount-input"
+                                                                 disabled placeholder="0 NAME_TOKEN" value=""></div>
                     <div class="sc-33m4yg-5 sc-33m4yg-6 kvRXYu iipmPE">
                         <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-1 fzUdiI bNRzcC cTqxjL"><span></span>
                             <div class="sc-18nh1jk-0 bTfoun css-djrxae"></div>
@@ -772,10 +754,10 @@
             <div class="sc-bdnxRM sc-nrd8cx-0 sc-nrd8cx-4 fzUdiI bNRzcC hXqRIf"></div>
         </div>
         <div>
-<!--            <div class="alert alert-warning alert-dismissible fade show" role="alert">-->
-<!--                <strong>Holy guacamole!</strong> You should check in on some of those fields below.-->
-<!--                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
-<!--            </div>-->
+            <!--            <div class="alert alert-warning alert-dismissible fade show" role="alert">-->
+            <!--                <strong>Holy guacamole!</strong> You should check in on some of those fields below.-->
+            <!--                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+            <!--            </div>-->
             <button id="buttonConnect-Buy" class="sc-bdnxRM bhVlig sc-fwrjc2-0 sc-fwrjc2-2 dZkESD iRJBOi">Connect Wallet</button>
         </div>
     </div>
@@ -786,149 +768,6 @@
         integrity="sha512-jRzb6jM5wynT5UHyMW2+SD+yLsYPEU5uftImpzOcVTdu1J7VsynVmiuFTsitsoL5PJVQi+OtWbrpWq/I+kkF4Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    // constants
-    const CONTRACT_ADDRESS = '0xC26A6ad890C0C18C46C743daC4dE8Cf30418eB10';
-    const NET_URL = 'https://rinkeby.infura.io/v3/bdc87b38535b446b8b953b13d9a40b38';
-    const Web3 = window.Web3
-    const ethereum = window.ethereum
-    const web3 = new Web3(NET_URL);
-    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-    const button = document.getElementById('buttonConnect-Buy')
-    const inputTokens = document.getElementById('inputTokens')
-    const inputEth = document.getElementById('inputEth')
-    const MIN_PRICE = 0.1
-    const MAX_PRICE = 1
-    let globalPrice = "0"
-    // constants end
-    window.addEventListener('load',async () => console.log(await contract.methods.priceInWei().call()))
-
-    async function getPrice() {
-        const PRICE_FOR = await web3.utils.fromWei(await contract.methods.priceInWei().call())
-
-        if (inputTokens.value * PRICE_FOR >= MIN_PRICE && inputTokens.value * PRICE_FOR <= MAX_PRICE) {
-            console.log("go in")
-            button.style.backgroundColor = 'rgb(39, 174, 96)';
-            button.disabled = false
-            button.innerHTML = 'Buy tokens'
-            const price = await web3.utils.fromWei(await contract.methods.priceInWei().call())
-            inputEth.value = price * inputTokens.value
-            console.log(inputEth.value)
-            globalPrice = inputEth.value
-        }
-            else if (inputTokens.value * PRICE_FOR < MIN_PRICE) {
-                button.disabled = true
-                inputEth.value = ""
-                button.style.backgroundColor = "#f8d7da"
-                button.innerHTML = `Please, buy tokens for more than ${MIN_PRICE} ETH`
-            } else  {
-                button.disabled = true
-                inputEth.value = ""
-                button.style.backgroundColor = "#f8d7da"
-                button.innerHTML = `Please, buy tokens for less than ${MAX_PRICE} ETH`
-
-            }
-
-
-
-    }
-
-
-    async function getAmountTokens(value = "0") {
-        if (value >= MIN_PRICE && value <= MAX_PRICE) {
-            button.style.backgroundColor = 'rgb(39, 174, 96)';
-            button.disabled = false
-            button.innerHTML = 'Buy tokens'
-            const wei = await web3.utils.toWei(value)
-            const amountTokens = await contract.methods.calculateAffordableTokens(wei).call()
-            inputTokens.value = amountTokens.slice(0, -12)
-            globalPrice = inputEth.value
-        }
-           else if (value < 0.1) {
-                inputTokens.value = ""
-                button.style.backgroundColor = "#f8d7da"
-                button.disabled = true
-                button.innerHTML = `Please, buy tokens for more than ${MIN_PRICE} ETH`
-            } else {
-                inputTokens.value = ""
-                button.style.backgroundColor = "#f8d7da"
-                button.disabled = true
-                button.innerHTML = `Please, buy tokens for less than ${MAX_PRICE} ETH`
-
-            }
-
-
-    }
-
-
-    function triggerGetAmountTokens() {
-        getAmountTokens(inputEth.value)
-    }
-
-
-    async function getAccount() {
-
-        const accounts = await ethereum.request({method: 'eth_requestAccounts'});
-        const account = accounts[0]
-        if (window.ethereum.chainId == "0x1") console.log("Already connected to ethereum mainnet...")
-        else {
-            try {
-                await ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{chainId: '0x1'}],
-                });
-            } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask.
-                if (error.code === 4902) {
-                    try {
-                        await ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: '0x1',
-                            }],
-                        });
-                    } catch (addError) {
-                    }
-                }
-            }
-        }
-        return account;
-    }
-
-    button.addEventListener('click', async () => {
-        if (button.innerHTML === "Connect Wallet") {
-           await getAccount()
-            button.style.backgroundColor = 'rgb(39, 174, 96)';
-            button.innerHTML = 'Buy tokens'
-            inputTokens.disabled = false
-            inputEth.disabled = false
-
-        } else if (button.innerHTML === "Buy tokens") await sendEth()
-
-        else {
-            console.log(new Error("some error"))
-        }
-
-    })
-
-
-    async function sendEth(value = "0") {
-        const account = await getAccount()
-        const globalPriceToHex = (globalPrice * 1e18).toString(16)
-        window.ethereum
-            .request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: account,
-                        to: CONTRACT_ADDRESS,
-                        value: globalPriceToHex,
-                    },
-                ],
-            })
-            .then((txHash) => console.log(txHash))
-            .catch((error) => console.error);
-    }
-
     const CONTRACT_ABI = [
         {
             "inputs": [
@@ -1426,5 +1265,160 @@
             "type": "function"
         }
     ]
+    // constants
+    const CONTRACT_ADDRESS = '0xC26A6ad890C0C18C46C743daC4dE8Cf30418eB10';
+    const NET_URL = 'https://rinkeby.infura.io/v3/bdc87b38535b446b8b953b13d9a40b38';
+    const Web3 = window.Web3
+    const ethereum = window.ethereum
+    const web3 = new Web3(NET_URL);
+    const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    const button = document.getElementById('buttonConnect-Buy')
+    const inputTokens = document.getElementById('inputTokens')
+    const inputEth = document.getElementById('inputEth')
+    let accounts = false;
+    const MIN_PRICE = 0.1
+    const MAX_PRICE = 1
+    let globalPrice = "0"
+    // constants end
+    window.addEventListener('load',async () => {
+        console.log(await contract.methods.priceInWei().call())
+        try {
+            accounts = await ethereum.request({method: 'eth_requestAccounts'});
+            button.style.backgroundColor = 'rgb(39, 174, 96)';
+            button.innerHTML = 'Buy tokens'
+            inputTokens.disabled = false
+            inputEth.disabled = false
+        } catch  {
+            console.log("не получилось")
+        }
+    })
+
+    async function getPrice() {
+        const PRICE_FOR = await web3.utils.fromWei(await contract.methods.priceInWei().call())
+
+        if (inputTokens.value * PRICE_FOR >= MIN_PRICE && inputTokens.value * PRICE_FOR <= MAX_PRICE) {
+            console.log("go in")
+            button.style.backgroundColor = 'rgb(39, 174, 96)';
+            button.disabled = false
+            button.innerHTML = 'Buy tokens'
+            const price = await web3.utils.fromWei(await contract.methods.priceInWei().call())
+            inputEth.value = price * inputTokens.value
+            console.log(inputEth.value)
+            globalPrice = inputEth.value
+        }
+        else if (inputTokens.value * PRICE_FOR < MIN_PRICE) {
+            button.disabled = true
+            inputEth.value = ""
+            button.style.backgroundColor = "#f8d7da"
+            button.innerHTML = `Please, buy tokens for more than ${MIN_PRICE} ETH`
+        } else  {
+            button.disabled = true
+            inputEth.value = ""
+            button.style.backgroundColor = "#f8d7da"
+            button.innerHTML = `Please, buy tokens for less than ${MAX_PRICE} ETH`
+
+        }
+
+
+
+    }
+
+
+    async function getAmountTokens(value = "0") {
+        if (value >= MIN_PRICE && value <= MAX_PRICE) {
+            button.style.backgroundColor = 'rgb(39, 174, 96)';
+            button.disabled = false
+            button.innerHTML = 'Buy tokens'
+            const wei = await web3.utils.toWei(value)
+            const amountTokens = await contract.methods.calculateAffordableTokens(wei).call()
+            inputTokens.value = amountTokens.slice(0, -12)
+            globalPrice = inputEth.value
+        }
+        else if (value < 0.1) {
+            inputTokens.value = ""
+            button.style.backgroundColor = "#f8d7da"
+            button.disabled = true
+            button.innerHTML = `Please, buy tokens for more than ${MIN_PRICE} ETH`
+        } else {
+            inputTokens.value = ""
+            button.style.backgroundColor = "#f8d7da"
+            button.disabled = true
+            button.innerHTML = `Please, buy tokens for less than ${MAX_PRICE} ETH`
+
+        }
+
+
+    }
+
+
+    function triggerGetAmountTokens() {
+        getAmountTokens(inputEth.value)
+    }
+
+
+    async function getAccount() {
+        if (!accounts) accounts = await ethereum.request({method: 'eth_requestAccounts'});
+        const account = accounts[0]
+        if (window.ethereum.chainId == "0x1") console.log("Already connected to ethereum mainnet...")
+        else {
+            try {
+                await ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{chainId: '0x1'}],
+                });
+            } catch (switchError) {
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (error.code === 4902) {
+                    try {
+                        await ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: '0x1',
+                            }],
+                        });
+                    } catch (addError) {
+                    }
+                }
+            }
+        }
+        return account;
+    }
+
+    button.addEventListener('click', async () => {
+        if (button.innerHTML === "Connect Wallet") {
+            await getAccount()
+            button.style.backgroundColor = 'rgb(39, 174, 96)';
+            button.innerHTML = 'Buy tokens'
+            inputTokens.disabled = false
+            inputEth.disabled = false
+
+        } else if (button.innerHTML === "Buy tokens") await sendEth()
+
+        else {
+            console.log(new Error("some error"))
+        }
+
+    })
+
+
+    async function sendEth(value = "0") {
+        const account = await getAccount()
+        const globalPriceToHex = (globalPrice * 1e18).toString(16)
+        window.ethereum
+            .request({
+                method: 'eth_sendTransaction',
+                params: [
+                    {
+                        from: account,
+                        to: CONTRACT_ADDRESS,
+                        value: globalPriceToHex,
+                    },
+                ],
+            })
+            .then((txHash) => console.log(txHash))
+            .catch((error) => console.error(error));
+    }
+
+
 
 </script>
